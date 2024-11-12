@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [0.6.1] - 2024-11-12
+
+### Feature
+
+- `passthrough` option to fork stdout between the commanding tty and callee
+
 ## [0.6.0] - 2024-11-06
 
 ### Compatibility

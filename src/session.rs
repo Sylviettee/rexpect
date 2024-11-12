@@ -6,7 +6,7 @@ use crate::reader::{NBReader, Regex};
 pub use crate::reader::{Options, ReadUntil};
 use std::fs::File;
 use std::io::prelude::*;
-use std::io::{LineWriter, stdout};
+use std::io::{stdout, LineWriter};
 use std::ops::{Deref, DerefMut};
 use std::process::Command;
 use tempfile;
@@ -49,8 +49,7 @@ pub struct StreamSession<W: Write> {
 impl<W: Write> StreamSession<W> {
     pub fn new<R: Read + Send + 'static>(reader: R, writer: W, options: Options) -> Self {
         Self {
-            writer: TeeWriter::new(
-                LineWriter::new(writer), options.passthrough),
+            writer: TeeWriter::new(LineWriter::new(writer), options.passthrough),
             reader: NBReader::new(reader, options),
         }
     }

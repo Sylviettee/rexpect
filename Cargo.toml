@@ -5,7 +5,7 @@ resolver = "2"
 repository = "https://github.com/rust-cli/rexpect"
 license = "MIT OR Apache-2.0"
 edition = "2021"
-rust-version = "1.65.0"  # MSRV
+rust-version = "1.65.0" # MSRV
 include = [
   "build.rs",
   "src/**/*",
@@ -14,7 +14,7 @@ include = [
   "LICENSE*",
   "README.md",
   "benches/**/*",
-  "examples/**/*"
+  "examples/**/*",
 ]
 
 [workspace.lints.rust]
@@ -55,7 +55,7 @@ invalid_upcast_comparisons = "warn"
 large_digit_groups = "warn"
 large_stack_arrays = "warn"
 large_types_passed_by_value = "warn"
-let_and_return = "allow"  # sometimes good to name what you are returning
+let_and_return = "allow"                 # sometimes good to name what you are returning
 linkedlist = "warn"
 lossy_float_literal = "warn"
 macro_use_imports = "warn"
@@ -89,7 +89,7 @@ zero_sized_map_values = "warn"
 [package]
 name = "rexpect"
 description = "Interact with unix processes/bash the same way as pexpect or Don libes expect does"
-version = "0.6.0"
+version = "0.6.1"
 categories = ["os::unix-apis"]
 keywords = ["pty", "automation", "testing", "expect", "pexpect"]
 repository.workspace = true
@@ -104,11 +104,11 @@ rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
 
 [package.metadata.release]
 pre-release-replacements = [
-  {file="CHANGELOG.md", search="Unreleased", replace="{{version}}", min=1},
-  {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
-  {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
-  {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/rust-cli/rexpect/compare/{{tag_name}}...HEAD", exactly=1},
+  { file = "CHANGELOG.md", search = "Unreleased", replace = "{{version}}", min = 1 },
+  { file = "CHANGELOG.md", search = "\\.\\.\\.HEAD", replace = "...{{tag_name}}", exactly = 1 },
+  { file = "CHANGELOG.md", search = "ReleaseDate", replace = "{{date}}", min = 1 },
+  { file = "CHANGELOG.md", search = "<!-- next-header -->", replace = "<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly = 1 },
+  { file = "CHANGELOG.md", search = "<!-- next-url -->", replace = "<!-- next-url -->\n[Unreleased]: https://github.com/rust-cli/rexpect/compare/{{tag_name}}...HEAD", exactly = 1 },
 ]
 
 [features]

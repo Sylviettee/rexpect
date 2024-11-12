@@ -3,7 +3,7 @@
 use crate::error::Error;
 pub use regex::Regex;
 use std::io::prelude::*;
-use std::io::{self, BufReader, stdout};
+use std::io::{self, stdout, BufReader};
 use std::sync::mpsc::{channel, Receiver};
 use std::thread;
 use std::{fmt, time};
@@ -154,7 +154,6 @@ impl NBReader {
                                 in_escape_code = false;
                             }
                         } else {
-                            
                             if options.passthrough {
                                 stdout().write_all(&byte)?;
                             }
@@ -189,11 +188,8 @@ impl NBReader {
             return Ok(());
         }
         while let Ok(from_channel) = self.reader.try_recv() {
-            
             match from_channel {
-                Ok(PipedChar::Char(c)) => {
-                    self.buffer.push(c as char)
-                },
+                Ok(PipedChar::Char(c)) => self.buffer.push(c as char),
                 Ok(PipedChar::EOF) => self.eof = true,
                 // this is just from experience, e.g. "sleep 5" returns the other error which
                 // most probably means that there is no stdout stream at all -> send EOF
