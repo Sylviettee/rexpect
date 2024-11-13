@@ -116,7 +116,6 @@ default = []
 which = ["dep:which"]
 
 [dependencies]
-comma = "1.0"
 nix = { version = "0.27", features = ["fs", "process", "signal", "term"] }
 regex = "1"
 tempfile = "3"

@@ -229,12 +229,6 @@ impl PtySession {
     }
 }
 
-/// Turn e.g. "prog arg1 arg2" into ["prog", "arg1", "arg2"]
-/// Also takes care of single and double quotes
-fn tokenize_command(program: &str) -> Result<Vec<String>, Error> {
-    comma::parse_command(program).ok_or(Error::BadProgramArguments)
-}
-
 /// Start command in background in a pty session (pty fork) and return a struct
 /// with writer and buffered reader (for unblocking reads).
 ///
@@ -253,10 +247,8 @@ pub fn spawn(program: &str, timeout_ms: Option<u64>) -> Result<PtySession, Error
         return Err(Error::EmptyProgramName);
     }
 
-    let mut parts = tokenize_command(program)?;
-    let prog = parts.remove(0);
-    let mut command = Command::new(prog);
-    command.args(parts);
+    let mut command = Command::new("/bin/sh");
+    command.args(["-c", program]);
     spawn_command(command, timeout_ms)
 }
 
@@ -588,26 +580,5 @@ mod tests {
         p.execute("cat <(echo ready) -", "ready")?;
         p.send_control('c')?;
         Ok(())
-    }
-
-    #[test]
-    fn test_tokenize_command() {
-        let res = tokenize_command("prog arg1 arg2");
-        assert_eq!(vec!["prog", "arg1", "arg2"], res.unwrap());
-
-        let res = tokenize_command("prog -k=v");
-        assert_eq!(vec!["prog", "-k=v"], res.unwrap());
-
-        let res = tokenize_command("prog 'my text'");
-        assert_eq!(vec!["prog", "my text"], res.unwrap());
-
-        let res = tokenize_command(r#"prog "my text""#);
-        assert_eq!(vec!["prog", r#"my text"#], res.unwrap());
-
-        let res = tokenize_command(r#"prog "my text with quote'""#);
-        assert_eq!(vec!["prog", r#"my text with quote'"#], res.unwrap());
-
-        let res = tokenize_command(r#"prog "my broken text"#);
-        assert!(res.is_err());
     }
 }
