@@ -74,7 +74,10 @@ pub mod reader;
 pub mod session;
 
 pub use reader::ReadUntil;
-pub use session::{spawn, spawn_bash, spawn_python, spawn_stream, spawn_with_options};
+#[cfg(feature = "tempfile")]
+#[cfg_attr(docsrs, doc(cfg(feature = "tempfile")))]
+pub use session::spawn_bash;
+pub use session::{spawn, spawn_python, spawn_stream, spawn_with_options};
 
 // include the README.md here to test its doc
 #[doc = include_str!("../README.md")]

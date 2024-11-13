@@ -11,7 +11,6 @@ use std::io::prelude::*;
 use std::io::{stdout, LineWriter};
 use std::ops::{Deref, DerefMut};
 use std::process::Command;
-use tempfile;
 
 pub struct TeeWriter<W: Write> {
     inner: W,
@@ -410,6 +409,7 @@ impl Drop for PtyReplSession {
 /// Also: if you start a program you should use `execute` and not `send_line`.
 ///
 /// For an example see the README
+#[cfg(feature = "tempfile")]
 pub fn spawn_bash(timeout: Option<u64>) -> Result<PtyReplSession, Error> {
     // unfortunately working with a temporary tmpfile is the only
     // way to guarantee that we are "in step" with the prompt
