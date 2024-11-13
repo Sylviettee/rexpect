@@ -27,7 +27,7 @@ impl<W: Write> Write for TeeWriter<W> {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         let c = self.inner.write(buf)?;
         if self.passthrough {
-            stdout().write(buf)?;
+            stdout().write_all(buf)?;
         }
         Ok(c)
     }
