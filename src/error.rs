@@ -34,6 +34,7 @@ pub enum Error {
     #[error("Failed to send via MPSC channel")]
     MpscSendError,
 
+    #[cfg(feature = "regex")]
     #[error(transparent)]
     Regex(#[from] regex::Error),
 

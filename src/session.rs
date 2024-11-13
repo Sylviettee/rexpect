@@ -2,7 +2,9 @@
 
 use crate::error::Error; // load error-chain
 use crate::process::PtyProcess;
-use crate::reader::{NBReader, Regex};
+use crate::reader::NBReader;
+#[cfg(feature = "regex")]
+use crate::reader::Regex;
 pub use crate::reader::{Options, ReadUntil};
 use std::fs::File;
 use std::io::prelude::*;
@@ -136,6 +138,8 @@ impl<W: Write> StreamSession<W> {
     ///
     /// Note that `exp_regex("^foo")` matches the start of the yet consumed output.
     /// For matching the start of the line use `exp_regex("\nfoo")`
+    #[cfg(feature = "regex")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "regex")))]
     pub fn exp_regex(&mut self, regex: &str) -> Result<(String, String), Error> {
         self.exp(&ReadUntil::Regex(Regex::new(regex)?))
     }
@@ -333,6 +337,8 @@ impl PtyReplSession {
     ///     # }().expect("test failed");
     /// # }
     /// ```
+    #[cfg(feature = "regex")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "regex")))]
     pub fn execute(&mut self, cmd: &str, ready_regex: &str) -> Result<(), Error> {
         self.send_line(cmd)?;
         if self.echo_on {
@@ -548,6 +554,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "regex")]
     #[test]
     fn test_kill_timeout() -> Result<(), Error> {
         let mut p = spawn_bash(Some(1000))?;
@@ -567,6 +574,7 @@ mod tests {
         Ok(())
     }
 
+    #[cfg(feature = "regex")]
     #[test]
     fn test_bash_control_chars() -> Result<(), Error> {
         let mut p = spawn_bash(Some(1000))?;

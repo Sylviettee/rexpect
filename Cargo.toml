@@ -114,12 +114,13 @@ pre-release-replacements = [
 [features]
 default = []
 which = ["dep:which"]
+regex = ["dep:regex"]
 
 [dependencies]
 nix = { version = "0.27", features = ["fs", "process", "signal", "term"] }
-regex = "1"
 tempfile = "3"
 thiserror = "1.0.34"
+regex = { version = "1", optional = true }
 which = { version = "5.0", optional = true }
 
 [lints]

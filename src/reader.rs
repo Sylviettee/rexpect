@@ -1,6 +1,7 @@
 //! Unblocking reader which supports waiting for strings/regexes and EOF to be present
 
 use crate::error::Error;
+#[cfg(feature = "regex")]
 pub use regex::Regex;
 use std::io::prelude::*;
 use std::io::{self, stdout, BufReader};
@@ -22,6 +23,7 @@ enum PipedChar {
 
 pub enum ReadUntil {
     String(String),
+    #[cfg(feature = "regex")]
     Regex(Regex),
     EOF,
     NBytes(usize),
@@ -34,6 +36,7 @@ impl fmt::Display for ReadUntil {
             ReadUntil::String(ref s) if s == "\n" => "\\n (newline)".to_owned(),
             ReadUntil::String(ref s) if s == "\r" => "\\r (carriage return)".to_owned(),
             ReadUntil::String(ref s) => format!("\"{s}\""),
+            #[cfg(feature = "regex")]
             ReadUntil::Regex(ref r) => format!("Regex: \"{r}\""),
             ReadUntil::EOF => "EOF (End of File)".to_owned(),
             ReadUntil::NBytes(n) => format!("reading {n} bytes"),
@@ -64,6 +67,7 @@ impl fmt::Display for ReadUntil {
 pub fn find(needle: &ReadUntil, buffer: &str, eof: bool) -> Option<(usize, usize)> {
     match needle {
         ReadUntil::String(ref s) => buffer.find(s).map(|pos| (pos, pos + s.len())),
+        #[cfg(feature = "regex")]
         ReadUntil::Regex(ref pattern) => pattern.find(buffer).map(|mat| (mat.start(), mat.end())),
         ReadUntil::EOF => {
             if eof {
@@ -327,6 +331,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "regex")]
     #[test]
     fn test_regex() {
         let f = io::Cursor::new("2014-03-15");
@@ -339,6 +344,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "regex")]
     #[test]
     fn test_regex2() {
         let f = io::Cursor::new("2014-03-15");
